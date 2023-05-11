@@ -67,18 +67,6 @@ sudo mv /etc/motd /etc/motd.original
   sudo sed -i 's/#PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config &&\
   sudo sed -i 's/PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
   ```
-
-### Optional
-* Update the SSH config to prevent last user login information being displayed.
-* Disable any other scripts in `/etc/update-motd.d/` apart from the new `00-motd`  
-```sh
-sudo sed -i 's/#PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config &&\
-sudo sed -i 's/PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config &&\
-sudo chmod -x /etc/update-motd.d/* &&\
-sudo chmod +x /etc/update-motd.d/00-motd &&\
-sudo systemctl restart ssh
-```
-
 ### Troubleshooting
 * The external IP lookup may fail if the system is behind a firewall or proxy. It also can affect the time it takes to display the MOTD. To disable the external IP lookup, edit the `00-motd` file and comment out the show_ext_ip call under the sys_info() function.
 
