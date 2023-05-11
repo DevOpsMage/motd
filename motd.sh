@@ -325,6 +325,15 @@ function show_updates() {
     fi
 }
 
+function show_ssh_con() {
+    if [ -n "$SSH_CLIENT" ]; then
+        local ssh_ip=$(echo "$SSH_CLIENT" | awk '{print $1}')
+        if [[ ! -z ${ssh_ip} ]]; then
+            output_result "${ssh_ip}" "SSH Client IP Address"
+        fi
+    fi
+}
+
 function sys_warning() {
     echo -ne "
 
@@ -345,6 +354,7 @@ ${BG_RED}${WHITE}╚════════════════════
 
 function sys_info() {
     echo
+    show_ssh_con
     show_date
     show_uptime
     show_hostname
