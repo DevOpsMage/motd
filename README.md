@@ -1,11 +1,6 @@
-## Debian Ubuntu Raspberry Pi Linux Message of the Day (MOTD) banner with system information
+# Custom MOTD 
 
-### Tested with the following systems
-* Debian 11
-* Ubuntu 22.04 LTS
-* FreeBSD 13 (currently limited display options)
-
-### Sample output
+## Example MOTD
 ```terminal
 
 ╔═════════════════════════════════════════════╗
@@ -37,22 +32,43 @@ Ext. IP ORG/ISP...: Provide / ISP Information
 
 ```
 
-
-### Usage
-* The following applies to Debian and Raspberry Pi
+## Tested with the following systems
+* Debian 11
+* Ubuntu 22.04 LTS
+* FreeBSD 13 (currently limited display options)
+* Debian 10
+* Raspberry Pi OS (Buster)
+* Raspberry Pi OS (Bullseye)
+* Ubuntu 20.04 LTS
+  
+## Setup
+> **Note**  
+> *Applies* to Debian based systems.
 * Download `motd.sh` as `00-motd` into `/etc/update-motd.d/` directory and set permissions.
 ```sh
-sudo wget -qO /etc/update-motd.d/00-motd https://raw.githubusercontent.com/bradsec/motd/main/motd.sh &&\
+sudo wget -qO /etc/update-motd.d/00-motd https://raw.githubusercontent.com/kenrad24/motd/main/motd.sh &&\
 sudo chmod 755 /etc/update-motd.d/00-motd
 ```
-
+> **Note**  
+> *Applies to Debian and Raspberry Pi (not Ubuntu)* 
 * Rename default motd located at /etc/motd
-* *Applies to Debian and Raspberry Pi (not Ubuntu)* 
 ```sh
 sudo mv /etc/motd /etc/motd.original
 ```
 
-#### Optional
+## Optional Setup Requirements  
+**Network Information**
+* `wget` needed for External IP lookup.
+* `net-tools` needed for `ifconfig` to display network interface IP information.
+  
+**SSH Configuration**
+* To prevent last user login information being displayed.
+  ```sh
+  sudo sed -i 's/#PrintLastLog yes/PrintLastLog no/' /etc/ssh sshd_config &&\
+  sudo sed -i 's/PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
+  ```
+
+### Optional
 * Update the SSH config to prevent last user login information being displayed.
 * Disable any other scripts in `/etc/update-motd.d/` apart from the new `00-motd`  
 ```sh
@@ -62,11 +78,7 @@ sudo chmod -x /etc/update-motd.d/* &&\
 sudo chmod +x /etc/update-motd.d/00-motd &&\
 sudo systemctl restart ssh
 ```
-* The ipinfo.io lookup delays the execution and login slightly.
-* Comment out in the `sys_info()` function to disable this function.
 
-
-#### Troubleshooting
-* Ubuntu by default may be missing `ifconfig` and no display network interface IP information.
-* Simply install net-tools using `sudo apt install net-tools`  
+### Troubleshooting
+* The external IP lookup may fail if the system is behind a firewall or proxy. It also can affect the time it takes to display the MOTD. To disable the external IP lookup, edit the `00-motd` file and comment out the show_ext_ip call under the sys_info() function.
 

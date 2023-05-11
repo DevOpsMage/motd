@@ -310,13 +310,27 @@ function show_ext_ip() {
     output_result "${RED}Offline - Unable to get IP information. ${RESET}" "External IP Info"
 }
 
+function show_updates() {
+    if [[ $(command -v apt-get) ]] >/dev/null 2>&1; then
+        apt-get update -qq
+        updates=$(apt list --upgradable 2>/dev/null | grep -c ^)
+        if [[ ! -z ${updates} ]]; then
+            output_result "${updates}" "System Updates"
+        fi
+    elif [[ $(command -v yum) ]] >/dev/null 2>&1; then
+        local updates=$(yum check-update | grep -v "^$" | wc -l)
+        if [[ ! -z ${updates} ]]; then
+            output_result "${updates}" "System Updates"
+        fi
+    fi
+}
 
 function sys_warning() {
     echo -ne "
 
 ${BG_RED}${WHITE}╔═════════════════════════════════════════════╗${RESET}
 ${BG_RED}${WHITE}║     YOU HAVE ACCESSED A PRIVATE SYSTEM      ║${RESET}
-${BG_RED}${WHITE}║         AUTHORISED USER ACCESS ONLY         ║${RESET}
+${BG_RED}${WHITE}║         AUTHORISED ACCESS ONLY              ║${RESET}
 ${BG_RED}${WHITE}║                                             ║${RESET}
 ${BG_RED}${WHITE}║ Unauthorised use of this system is strictly ║${RESET}
 ${BG_RED}${WHITE}║ prohibited and may be subject to criminal   ║${RESET}
@@ -335,6 +349,7 @@ function sys_info() {
     show_uptime
     show_hostname
     show_os_info
+    show_updates
     show_cpu
     show_processes
     show_mem
