@@ -64,7 +64,7 @@ sudo mv /etc/motd /etc/motd.original
 **SSH Configuration**
 * To prevent last user login information being displayed.
   ```sh
-  sudo sed -i 's/#PrintLastLog yes/PrintLastLog no/' /etc/ssh sshd_config &&\
+  sudo sed -i 's/#PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config &&\
   sudo sed -i 's/PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
   ```
 
