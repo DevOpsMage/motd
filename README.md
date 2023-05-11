@@ -47,7 +47,8 @@ Ext. IP ORG/ISP...: Provide / ISP Information
 * Download `motd.sh` as `00-motd` into `/etc/update-motd.d/` directory and set permissions.
 ```sh
 sudo wget -qO /etc/update-motd.d/00-motd https://raw.githubusercontent.com/kenrad24/motd/main/motd.sh &&\
-sudo chmod 755 /etc/update-motd.d/00-motd
+sudo chmod -x /etc/update-motd.d/* &&\
+sudo chmod +x /etc/update-motd.d/00-motd
 ```
 > **Note**  
 > *Applies to Debian and Raspberry Pi (not Ubuntu)* 
@@ -65,7 +66,8 @@ sudo mv /etc/motd /etc/motd.original
 * To prevent last user login information being displayed.
   ```sh
   sudo sed -i 's/#PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config &&\
-  sudo sed -i 's/PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config
+  sudo sed -i 's/PrintLastLog yes/PrintLastLog no/' /etc/ssh/sshd_config &&\
+  sudo systemctl restart sshd
   ```
 ### Troubleshooting
 * The external IP lookup may fail if the system is behind a firewall or proxy. It also can affect the time it takes to display the MOTD. To disable the external IP lookup, edit the `00-motd` file and comment out the show_ext_ip call under the sys_info() function.
