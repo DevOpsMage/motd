@@ -46,7 +46,7 @@ Ext. IP ORG/ISP...: Provide / ISP Information
 > *Applies* to Debian based systems.
 * Download `motd.sh` as `00-motd` into `/etc/update-motd.d/` directory and set permissions.
 ```sh
-sudo wget -qO /etc/update-motd.d/00-motd https://raw.githubusercontent.com/kenrad24/motd/main/motd.sh &&\
+sudo wget -qO /etc/update-motd.d/00-motd https://raw.githubusercontent.com/LichKeldor/motd/main/motd.sh &&\
 sudo chmod -x /etc/update-motd.d/* &&\
 sudo chmod +x /etc/update-motd.d/00-motd
 ```
